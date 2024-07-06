@@ -198,3 +198,37 @@
   }
 }
  
+
+
+
+/* News CSS  */
+.news-image{
+  max-height: 15em;
+  min-height: 15em;
+}
+
+.card{
+  min-height: 450px;
+  max-height: 450px;
+}
+.card-title{
+  min-height: 58px;
+}
+.card-text{
+  min-height: 58px;
+}
+
+
+
+
+/* News CSS  */
+.news-headline{
+  padding-top: 13vb;
+}
+
+/* Navbar Link  */
+.nav-link:hover{
+  color: chocolate;
+  transition: .5s;
+  scale: 1.090;
+}
