@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NewsItems from "./NewsItems";
-import Loader from "./Loader";
+import InfiniteScroll from "react-infinite-scroll-component";
+// import Loader from "./Loader";
 
 export default class News extends Component {
   constructor() {
@@ -8,12 +9,19 @@ export default class News extends Component {
     this.state = {
       articles: [],
       loading: true,
-      page : 1
+      page : 1,
+      totalResults : 0,
     };
   }
 
-  async componentDidMount(){
-    let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}`;
+
+  capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
+  async updateNews (pageNo) {
+    let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}ountry=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${pageNo}`;
     this.setState({loading:true})
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -22,49 +30,55 @@ export default class News extends Component {
       totalResults : parsedData.totalResults ,
       loading : false
     });
+
+    document.title= `Dark Spark - ${this.capitalizeFirstLetter(this.props.category)} `
   }
 
-  handlePreviousPages = async() =>{
-    console.log("Previous");
-    let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bdd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page - 1}`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({loading:true})
-    console.log(parsedData);
-    this.setState({articles : parsedData.articles,page: this.state.page - 1 , loading: false});
+
+
+  async componentDidMount(){
+    this.updateNews(this.state.page);
   }
 
-  handleNextPages = async() =>{
-    console.log("Next");
-    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults/this.state.pageSize))) {
-      let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page + 1}`;
-      this.setState({loading : true})
+  
+
+  fetchMoreData = async (pageNo) => {
+    this.setState({page:this.state.page+1});
+    let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}ountry=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${pageNo}`;
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({articles : parsedData.articles,page: this.state.page + 1, loading : false});
-    }
-  }
+    this.setState({articles : parsedData.articles,
+      totalResults : parsedData.totalResults ,
+      loading : false
+    });
+
+  };
 
   render() {
     return (
       <div className="container news-headline">
-        <h1 className="text-center">Today's Head Lines</h1>
-        {this.state.loading && <Loader />}
-        <div className="row my-3">
-          {!this.state.loading && this.state.articles.map(
+        <h1 className="text-center">Today's Top Headlines about {this.capitalizeFirstLetter(this.props.category)}</h1>
+        {/* {this.state.loading && <Loader />} */}
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length < this.state.totalResults}
+          loader={<h4>Loading...</h4>}
+        >
+         <div className="container">
+         <div className="row my-3">
+          { this.state.articles.map(
             (element) => {
             return (
               <div className="col-md-4" key={element.url}>
-                <NewsItems title={element.title? element.title.slice(0,55) : ""} description={element.description ? element.description.slice(0 ,70) : ""} imageUrl={element.urlToImage} newsUrl={element.url} />
+                <NewsItems title={element.title? element.title.slice(0,55) : ""} description={element.description ? element.description.slice(0 ,70) : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name}/>
               </div>
             );
           })}
         </div>
-        <div className="d-flex justify-content-between my-4">
-        <button type="button" disabled={this.state.page <= 1} class="btn btn-outline-dark" onClick={this.handlePreviousPages}>&larr; Previous</button>
-        <button type="button" class="btn btn-outline-dark" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults/this.state.page)} onClick={this.handleNextPages}>Next &rarr;</button>
-        </div>
+         </div>
+        </InfiniteScroll>
       </div>
     );
   }
