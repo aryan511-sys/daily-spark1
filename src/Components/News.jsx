@@ -65,6 +65,11 @@ export default class News extends Component {
           next={this.fetchMoreData}
           hasMore={this.state.articles.length < this.state.totalResults}
           loader={<h4>Loading...</h4>}
+          endMessageendMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+            }
         >
          <div className="container">
          <div className="row my-3">
