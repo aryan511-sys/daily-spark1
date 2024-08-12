@@ -5,6 +5,7 @@ import "./App.css";
 import PropTypes from "prop-types";
 import AboutUs from "./Components/AboutUs";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoadingBar from 'react-top-loading-bar'
 export default class App extends Component {
   static defaultProps = {
     pageSize: 6,
@@ -30,6 +31,14 @@ export default class App extends Component {
       isDarkMode: !prevState.isDarkMode,
     }));
   };
+
+  state = {
+    progress : 0
+  }
+
+  setProgress = (progress) => {
+    this.setState({progress : progress});
+  }
   render() {
     const { isDarkMode } = this.state;
     const themeClass = isDarkMode ? "dark-mode" : "light-mode";
@@ -38,12 +47,18 @@ export default class App extends Component {
         <Router>
           <div className={`app ${themeClass}`}>
             <NavBar toggleMode={this.toggleDarkMode} />
+            <LoadingBar
+              color='#f11946'
+              progress={this.state.progress}
+              // onLoaderFinished={() => setProgress(0)}
+            />
 
             <Routes>
               <Route
                 path="/"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="general"
                     pageSize={6}
                     country={"in"}
@@ -55,6 +70,7 @@ export default class App extends Component {
                 path="/business"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="business"
                     pageSize={6}
                     country={"in"}
@@ -66,6 +82,7 @@ export default class App extends Component {
                 path="/entertainment"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="entertainment"
                     pageSize={6}
                     country={"in"}
@@ -77,6 +94,7 @@ export default class App extends Component {
                 path="/health"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="helth"
                     pageSize={6}
                     country={"in"}
@@ -88,6 +106,7 @@ export default class App extends Component {
                 path="/science"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="science"
                     pageSize={6}
                     country={"in"}
@@ -99,6 +118,7 @@ export default class App extends Component {
                 path="/sports"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="sports"
                     pageSize={6}
                     country={"in"}
@@ -110,6 +130,7 @@ export default class App extends Component {
                 path="/technology"
                 element={
                   <News
+                    setProgress={this.setProgress}
                     key="technoligy"
                     pageSize={6}
                     country={"in"}

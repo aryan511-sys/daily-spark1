@@ -21,16 +21,19 @@ export default class News extends Component {
 
 
   async updateNews (pageNo) {
+    this.props.setProgress(10)
     let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}ountry=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${pageNo}`;
     this.setState({loading:true})
+    this.props.setProgress(30)
     let data = await fetch(url);
+    this.props.setProgress(70)
     let parsedData = await data.json();
     console.log(parsedData);
     this.setState({articles : parsedData.articles,
       totalResults : parsedData.totalResults ,
       loading : false
     });
-
+    this.props.setProgress(100)
     document.title= `Dark Spark - ${this.capitalizeFirstLetter(this.props.category)} `
   }
 
@@ -48,7 +51,7 @@ export default class News extends Component {
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(parsedData);
-    this.setState({articles : parsedData.articles,
+    this.setState({articles : parsedData.articles.concat(this.state.articles),
       totalResults : parsedData.totalResults ,
       loading : false
     });
