@@ -26,14 +26,14 @@ export default class News extends Component {
     this.setState({loading:true})
     this.props.setProgress(30)
     let data = await fetch(url);
-    this.props.setProgress(0)
+    this.props.setProgress(70)
     let parsedData = await data.json();
     console.log(parsedData);
     this.setState({articles : parsedData.articles,
       totalResults : parsedData.totalResults ,
       loading : false
     });
-
+    this.props.setProgress(100)
     document.title= `Dark Spark - ${this.capitalizeFirstLetter(this.props.category)} `
   }
 
