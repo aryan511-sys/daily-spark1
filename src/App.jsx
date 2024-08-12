@@ -12,7 +12,7 @@ export default class App extends Component {
   }
 
   static propTypes = {
-    pageSize : PropTypes.string,
+    pageSize : PropTypes.number,
     country : PropTypes.string,
     category : PropTypes.string,
   }

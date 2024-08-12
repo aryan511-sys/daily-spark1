@@ -24,14 +24,16 @@ export default class News extends Component {
     });
   }
 
-  handlePreviousPages = async() =>{
-    console.log("Previous");
-    let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bdd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page - 1}`;
+  handlePrevPages = async() =>{
+    console.log("Next");
+    if (!(this.state.page + 1 > Math.ceil(this.state.totalResults/this.state.pageSize))) {
+      let url=`https://newsapi.org/v2/top-headlines?country=${this.props.country}&apiKey=2b6a1cf8ee114bce916ad187e77bddd3&category=${this.props.category}&pageSize=${this.props.pageSize}&page=${this.state.page + 1}`;
+      this.setState({loading : true})
     let data = await fetch(url);
     let parsedData = await data.json();
-    this.setState({loading:true})
     console.log(parsedData);
-    this.setState({articles : parsedData.articles,page: this.state.page - 1 , loading: false});
+    this.setState({articles : parsedData.articles,page: this.state.page - 1, loading : false});
+    }
   }
 
   handleNextPages = async() =>{
@@ -62,7 +64,7 @@ export default class News extends Component {
           })}
         </div>
         <div className="d-flex justify-content-between my-4">
-        <button type="button" disabled={this.state.page <= 1} class="btn btn-outline-dark" onClick={this.handlePreviousPages}>&larr; Previous</button>
+        <button type="button" disabled={this.state.page <= 1} class="btn btn-outline-dark" onClick={this.handlePrevPages}>&larr; Previous</button>
         <button type="button" class="btn btn-outline-dark" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults/this.state.page)} onClick={this.handleNextPages}>Next &rarr;</button>
         </div>
       </div>
