@@ -22,6 +22,8 @@ export default class App extends Component {
     super(props);
     this.state = {
       isDarkMode: false,
+      apiKey : process.env.REACT_APP_API_KEY,
+      progress : 0,
     };
   }
 
@@ -31,9 +33,9 @@ export default class App extends Component {
     }));
   };
 
-  state = {
-    progress : 0
-  }
+    // state = {
+      
+    // }
 
   setProgress = (progress) => {
     this.setState({progress : progress});
@@ -58,6 +60,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="general"
                     pageSize={6}
                     country={"in"}
@@ -70,6 +73,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="business"
                     pageSize={6}
                     country={"in"}
@@ -82,6 +86,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="entertainment"
                     pageSize={6}
                     country={"in"}
@@ -94,6 +99,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="helth"
                     pageSize={6}
                     country={"in"}
@@ -106,6 +112,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="science"
                     pageSize={6}
                     country={"in"}
@@ -118,6 +125,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="sports"
                     pageSize={6}
                     country={"in"}
@@ -130,6 +138,7 @@ export default class App extends Component {
                 element={
                   <News
                     setProgress={this.setProgress}
+                    apiKey={this.state.apiKey}
                     key="technoligy"
                     pageSize={6}
                     country={"in"}
