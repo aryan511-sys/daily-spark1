@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-export class NavBar extends Component {
-    render() {
-        let { toggleMode } = this.props;
+const NavBar = () =>{
+ {
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -39,7 +38,7 @@ export class NavBar extends Component {
                         </div>
                         <div>
                             <label className="theme-switch">
-                                <input type="checkbox" className="theme-switch__checkbox" onClick={toggleMode} />
+                                <input type="checkbox" className="theme-switch__checkbox"/>
                                     <div className="theme-switch__container">
                                         <div className="theme-switch__clouds"></div>
                                         <div className="theme-switch__stars-container">
